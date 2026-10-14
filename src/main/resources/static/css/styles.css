@@ -1,0 +1,66 @@
+/* Base / reset */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #f5f5f7; min-height: 100vh; }
+
+/* Buttons (shared) */
+.btn { background:#6a5acd; color:#fff; border:none; border-radius:6px; padding:10px 20px; cursor:pointer; transition:0.3s; font-weight:500; }
+.btn:hover { background:#483d8b; }
+
+/* -------- Auth page -------- */
+.auth-container {
+  background:#fff; border-radius:15px; padding:30px;
+  width:90%; max-width:500px; text-align:center;
+  box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+  margin:auto; margin-top:60px;
+}
+.auth-container img { width:120px; margin-bottom:20px; }
+.auth-container h1 { color:#6a5acd; margin-bottom:10px; }
+.auth-container p { color:#333; margin-bottom:15px; line-height:1.5; }
+
+.form-box { display:none; text-align:left; margin-top:20px; }
+.form-box h2 { text-align:center; color:#6a5acd; margin-bottom:15px; }
+.form-group { margin-bottom:15px; }
+.form-group label { display:block; margin-bottom:5px; color:#333; }
+.form-group input {
+  width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;
+}
+.form-btn { width:100%; padding:10px; background:#6a5acd; border:none; border-radius:6px; color:#fff; font-weight:600; }
+.back-btn { margin-top:10px; display:block; text-align:center; color:#6a5acd; cursor:pointer; text-decoration:underline; }
+.msg { margin-top:10px; color:#2e7d32; text-align:center; }
+.err { margin-top:10px; color:#c62828; text-align:center; }
+
+/* -------- App layout -------- */
+.app-container { height:100vh; display:flex; }
+.sidebar {
+  background:linear-gradient(180deg,#d8bfd8,#a9a9a9);
+  width:220px; padding:20px; display:flex; flex-direction:column; gap:15px;
+  box-shadow:2px 0 8px rgba(0,0,0,0.1);
+}
+.sidebar h2 { color:#4b0082; margin-bottom:10px; }
+.sidebar button {
+  background:#fff; color:#333; border:1px solid #6a5acd;
+  padding:10px; border-radius:8px; cursor:pointer; text-align:left;
+  transition:0.3s; font-weight:500;
+}
+.sidebar button:hover { background:#6a5acd; color:#fff; }
+
+.main { flex:1; padding:20px; overflow:auto; }
+.section {
+  display:none; background:#fff; border-radius:12px; padding:20px;
+  box-shadow:0px 4px 10px rgba(0,0,0,0.1); animation:fadeIn 0.4s ease;
+}
+.section.active { display:block; }
+h2 { margin-bottom:15px; font-size:22px; color:#6a5acd; }
+
+table { width:100%; border-collapse:collapse; margin-top:15px; }
+th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+th { background:#e6e6fa; }
+
+.alert-log li { margin:8px 0; padding:10px; border-radius:6px; font-size:14px; }
+.critical { background:#ffcccc; }
+.ok { background:#ccffcc; }
+
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.topbar { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+.spacer { flex:1; }

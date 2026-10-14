@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Food Shelf Life Tracker</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div class="app-container" id="app">
+    <div class="sidebar">
+      <h2>FoodTracker</h2>
+      <button onclick="showSection('dashboard')">📊 Dashboard</button>
+      <button onclick="showSection('food-entry')">🍎 Food Entry</button>
+      <button onclick="showSection('food-list')">📋 Food List</button>
+      <button onclick="showSection('iot-devices')">🔗 IoT Devices</button>
+      <button onclick="showSection('reports')">📈 Reports</button>
+      <button onclick="showSection('alert-history')">📜 Alerts</button>
+      <form th:action="@{/logout}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button class="btn" type="submit">🚪 Logout</button>
+      </form>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div><b>Signed in:</b> <span th:text="${userEmail}">user@example.com</span></div>
+        <div class="spacer"></div>
+      </div>
+
+      <!-- Dashboard (default active) -->
+      <div id="dashboard" class="section active">
+        <h2>📊 Dashboard</h2>
+        <p>Monitor food conditions, expiry, and IoT sensors in real-time.</p>
+        <div><b>Temperature:</b> <span id="temp">-- °C</span></div>
+        <div><b>Humidity:</b> <span id="humidity">-- %</span></div>
+        <div><b>Items Near Expiry (≤3 days):</b> <span id="expiry">--</span></div>
+      </div>
+
+      <!-- Food Entry -->
+      <div id="food-entry" class="section">
+        <h2>🍎 Add Food Item</h2>
+        <form id="foodForm">
+          <input type="hidden" id="csrfHeaderName" th:value="${_csrf.headerName}">
+          <input type="hidden" id="csrfToken" th:value="${_csrf.token}">
+
+          <input type="text" id="foodName" placeholder="Item Name" required><br><br>
+          <input type="text" id="barcode" placeholder="Barcode / GS1 QR payload"><br><br>
+
+          <label><b>Entry Date</b></label><br>
+          <input type="date" id="entryDate" required><br><br>
+
+          <label><b>Expiry Date</b></label><br>
+          <input type="date" id="expiryDate" required><br><br>
+
+          <label><b>Ingredients</b></label><br>
+          <textarea id="ingredients" rows="4" placeholder="Auto-filled from barcode"></textarea><br><br>
+
+          <label><input type="checkbox" id="saveDefault"> Remember product for future</label><br><br>
+
+          <label><b>Default Shelf Life (days)</b></label><br>
+          <input type="number" id="shelfLifeDays" min="1" placeholder="e.g., 7"><br><br>
+
+          <button class="btn" type="submit">Add Item</button>
+        </form>
+
+        <br>
+        <p><b>Last scanned payload:</b></p>
+        <textarea id="scanPayload" rows="3" readonly style="width:100%;"></textarea>
+
+        <br><br>
+        <p><b>Scan Barcode / QR:</b></p>
+        <div id="reader" style="width:250px;height:250px;border:1px solid #ccc;"></div>
+        <p style="margin-top:8px;font-size:12px;color:#555;">
+          Tip: Expiry auto-fill works if you scan a GS1 QR/DataMatrix with AI (17). For plain EAN/UPC, set shelf life (days).
+        </p>
+      </div>
+
+      <!-- Food List -->
+      <div id="food-list" class="section">
+        <h2>📋 Food Inventory</h2>
+        <table id="foodTable"><tr><th>Name</th><th>Barcode</th><th>Expiry</th></tr></table>
+      </div>
+
+      <!-- IoT Devices -->
+      <div id="iot-devices" class="section">
+        <h2>🔗 IoT Devices</h2>
+        <input type="hidden" id="csrfHeaderName2" th:value="${_csrf.headerName}">
+        <input type="hidden" id="csrfToken2" th:value="${_csrf.token}">
+        <label>Select Device Type:</label>
+        <select id="deviceType">
+          <option>Temperature Sensor</option>
+          <option>RFID Scanner</option>
+          <option>Cold Storage Monitor</option>
+          <option>Humidity Sensor</option>
+        </select>
+        <button class="btn" onclick="connectDevice()">Connect Device</button>
+        <ul id="deviceList"></ul>
+      </div>
+
+      <!-- Reports -->
+      <div id="reports" class="section">
+        <h2>📈 Reports</h2>
+        <canvas id="wasteChart"></canvas>
+      </div>
+
+      <!-- Alerts (server-persisted) -->
+      <div id="alert-history" class="section">
+        <h2>📜 Alerts</h2>
+        <input type="hidden" id="csrfHeaderName3" th:value="${_csrf.headerName}">
+        <input type="hidden" id="csrfToken3" th:value="${_csrf.token}">
+        <ul id="alert-log" class="alert-log"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  <!-- App JS -->
+  <script th:src="@{/js/app.js}"></script>
+</body>
+</html>
